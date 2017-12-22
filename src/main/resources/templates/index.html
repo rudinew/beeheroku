@@ -1,0 +1,77 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title th:text="#{title.site}"></title>
+
+    <div th:replace="fragments/headerMain :: header-css"/>
+
+</head>
+
+<body>
+
+<div id="wrapper">
+
+    <!-- Header -->
+    <!-- <div th:replace="fragments/headerMain :: headerMain"> </div> -->
+   <!-- <div th:include="fragments/headerMain" th:remove="tag" /> -->
+    <div th:replace="fragments/headerMain :: header"/>
+
+
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="page-header text-primary"><span text="#{index.menu.home}"></span></h3>
+						
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Оберіть дію
+							</div>
+							<!-- /.panel-heading -->
+							<div class="panel-body">						
+					           <div>
+									<a href="#"   class="btn btn-outline btn-primary btn-lg" aria-label="Right Align">
+										<span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>  <span th:text="#{page.button.newcard}"></span>
+									</a>
+							   </div>
+						
+							</div>
+							<!-- /.panel-body -->
+						</div>
+						<!-- /.panel -->
+						
+						
+						
+                    </div>
+                    <!-- /.col-lg-12 -->
+
+
+
+
+
+
+</div>
+
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+
+</html>

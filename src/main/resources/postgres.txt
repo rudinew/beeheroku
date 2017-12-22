@@ -1,0 +1,225 @@
+-- Database: diplom
+
+-- DROP DATABASE diplom;
+
+CREATE DATABASE diplom
+  WITH OWNER = postgres
+       ENCODING = 'UTF8'
+       TABLESPACE = pg_default
+       LC_COLLATE = 'Russian_Russia.1251'
+       LC_CTYPE = 'Russian_Russia.1251'
+       CONNECTION LIMIT = -1;
+
+CREATE TABLE BEE_USERS(
+                    ID bigserial PRIMARY KEY,
+                    LOGIN VARCHAR(255),
+                    L_NAME VARCHAR(255),
+                    F_NAME VARCHAR(255),
+                    M_NAME VARCHAR(255),
+                    DT_BIRTH DATE,
+                    GENDER smallint,
+                    PHONE varchar(50),
+                    E_MAIL varchar(100),
+                    PASSWORD VARCHAR(255),
+                    CONFIRMPASSWORD VARCHAR(255),
+                    IS_ACTIVE integer,
+                    ROLE VARCHAR(255),
+                    DT_FROM DATE
+                    );
+
+  ALTER TABLE BEE_USERS
+  OWNER TO postgres;
+
+  ALTER TABLE BEE_USERS ADD UNIQUE (LOGIN);
+ /////
+  CREATE TABLE BEE_PERSON(
+                      ID bigserial  PRIMARY KEY,
+                      L_NAME VARCHAR(255),
+                      F_NAME VARCHAR(255),
+                      M_NAME VARCHAR(255),
+                      DT_BIRTH DATE,
+                      GENDER smallint,
+                      PLACE_BIRTH varchar(255),
+                      CITIZENSHIP_ID bigserial,
+                      FAMILY_STATUS smallint,
+                      PHONE varchar(50),
+                      E_MAIL varchar(100),
+                      SOCIAL_NETWORKS varchar(255),
+                      address_registration varchar(255),
+                      address_live varchar(255),
+                      user_id bigserial,
+                      DT_FROM DATE
+                      );
+   ALTER TABLE BEE_PERSON
+    OWNER TO postgres;
+
+  ALTER TABLE BEE_PERSON
+   ADD CONSTRAINT fk_person_users
+   FOREIGN KEY (user_id)
+   REFERENCES bee_users(id)
+     ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+////////////
+CREATE TABLE bee_person_file
+(
+  id bigserial PRIMARY KEY,
+    file bytea not null,
+    name VARCHAR(255),
+    size VARCHAR(255),
+    type VARCHAR(255),
+    user_id bigserial,
+    dt_from DATE,
+    person_id bigserial,
+CONSTRAINT fk_person_file_users FOREIGN KEY (user_id)
+      REFERENCES bee_users (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+    CONSTRAINT fk_person_file_person FOREIGN KEY (person_id)
+      REFERENCES bee_person (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+);
+
+ALTER TABLE bee_person_file
+  OWNER TO postgres;
+
+//////
+   CREATE TABLE bee_document_type
+    (ID bigserial  PRIMARY KEY,
+    name VARCHAR(50),
+    alias VARCHAR(50)
+       );
+
+  ALTER TABLE bee_document_type
+   ADD COLUMN IS_REQUIRED boolean DEFAULT FALSE ;
+
+   update bee_document_type set is_required = TRUE where id in (2,3)
+
+       insert into bee_document_type (NAME, ALIAS) VALUES ('Паспорт закордонний', 'passport_out', 0);
+       insert into bee_document_type (NAME, ALIAS) VALUES ('Паспорт України', 'passport_in', 1);
+       insert into bee_document_type (NAME, ALIAS) VALUES ('ІПН', 'tax', 1);
+       insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про народження дитини', 'birth_child', 0);
+       insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про народження', 'birth', 0);
+       insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про шлюб', 'marriage', 0);
+       insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про розлучення', 'divorce', 0);
+       insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про смерть', 'death', 0);
+       insert into bee_document_type (NAME, ALIAS) VALUES ('Атестат', 'school_certificate', 0);
+       insert into bee_document_type (NAME, ALIAS) VALUES ('Диплом бакалавра', 'bachelor', 0);
+       insert into bee_document_type (NAME, ALIAS) VALUES ('Диплом спеціаліста', 'specialist', 0);
+       insert into bee_document_type (NAME, ALIAS) VALUES ('Диплом магістра', 'master', 0);
+       insert into bee_document_type (NAME, ALIAS) VALUES ('Сертифікат', 'certificate', 0);
+       insert into bee_document_type (NAME, ALIAS) VALUES ('Інше', 'other', 0);
+///////////
+ CREATE TABLE BEE_CITIZENSHIP(ID bigserial  PRIMARY KEY,
+                        NAME VARCHAR(255) NOT NULL);
+
+      insert into BEE_CITIZENSHIP (NAME) VALUES ('України');
+      insert into BEE_CITIZENSHIP (NAME) VALUES ('інших держав');
+///////////
+ CREATE TABLE BEE_DOCUMENT(ID bigserial  PRIMARY KEY,
+                          Person_id bigserial,
+                          type_id bigserial,
+                          Series varchar(50),
+                          num varchar(50),
+                          Vydano varchar(255),
+                          Dt_start DATE,
+                          Dt_end DATE,
+                          Description varchar(255),
+                          user_id bigserial,
+                          DT_FROM DATE,
+                          CONSTRAINT fk_document_person FOREIGN KEY (Person_id)
+                            REFERENCES bee_person (ID) MATCH SIMPLE
+                            ON DELETE CASCADE,
+                          CONSTRAINT fk_document_type FOREIGN KEY (type_id)
+                            REFERENCES bee_document_type (ID)
+                            ON DELETE NO action,
+                          CONSTRAINT fk_document_users FOREIGN KEY (user_id)
+                           REFERENCES bee_users (ID) ON DELETE NO ACTION ON UPDATE NO ACTION
+                          );
+///////////
+CREATE TABLE BEE_DOCUMENT_FILE
+    (id bigserial  PRIMARY KEY,
+    file bytea not null,
+    name VARCHAR(255),
+    size VARCHAR(255),
+    type VARCHAR(255),
+    user_id bigserial,
+    dt_from DATE,
+    document_id bigserial,
+    CONSTRAINT fk_document_file_users FOREIGN KEY (user_id)
+    REFERENCES bee_users (ID)
+    ON DELETE NO ACTION,
+    CONSTRAINT fk_document_file_doc FOREIGN KEY (document_ID)
+    REFERENCES BEE_document(id)
+    ON DELETE CASCADE
+       );
+///////////
+CREATE TABLE bee_access_person (
+  id bigserial  PRIMARY KEY,
+  person_id bigserial NOT NULL,
+  user_id bigserial NOT NULL,
+  privileges VARCHAR(45) NOT NULL DEFAULT 'EDIT',
+  parent_user_id bigserial,
+  CONSTRAINT FK_person FOREIGN KEY (person_id)
+    REFERENCES bee_person (ID)
+    ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT FK_users FOREIGN KEY (user_id)
+    REFERENCES bee_users (ID)
+    ON DELETE CASCADE ON UPDATE NO ACTION,
+  CONSTRAINT FK_users_parent FOREIGN KEY (parent_user_id)
+    REFERENCES bee_users (ID)
+    ON DELETE CASCADE ON UPDATE NO ACTION);
+///////////
+CREATE TABLE BEE_USERS_RELATION (
+  id bigserial  PRIMARY KEY,
+  parent_user_id bigserial NOT NULL,
+  child_user_id bigserial NOT NULL,
+    CONSTRAINT UC_USERS_RELATION UNIQUE (parent_user_id,child_user_id),
+    CONSTRAINT FK_users_relation_parent FOREIGN KEY (parent_user_id)
+    REFERENCES bee_users (ID)
+    ON DELETE CASCADE ON UPDATE NO ACTION,
+    CONSTRAINT FK_users_relation_child FOREIGN KEY (child_user_id)
+    REFERENCES bee_users (ID)
+    ON DELETE CASCADE ON UPDATE NO ACTION
+    );
+///////////
+CREATE TABLE BEE_ACTIONS (
+      ID bigserial  PRIMARY KEY,
+      NAME varchar(255) NOT NULL,
+      ACTION varchar(255) NOT NULL,
+      USER_ID bigserial NOT NULL,
+      DT_FROM date DEFAULT NULL ,
+     CONSTRAINT FK_ACTIONS_USERS FOREIGN KEY (user_id)
+        REFERENCES bee_users(ID)
+        ON DELETE CASCADE ON UPDATE NO ACTION
+    );
+////////////
+CREATE TABLE BEE_DOC_NOTIFICATION (
+      ID bigserial  PRIMARY KEY,
+      TYPE_ID bigserial NOT NULL,
+      is_required boolean,
+      USER_ID bigserial NOT NULL,
+
+      CONSTRAINT FK_DOC_NOTIFICATION_DOC_TYPE FOREIGN KEY (type_id)
+        REFERENCES bee_document_type (ID)
+        ON DELETE CASCADE ON UPDATE NO ACTION,
+
+     CONSTRAINT FK_DOC_NOTIFICATION_USERS FOREIGN KEY (user_id)
+        REFERENCES bee_users (ID)
+        ON DELETE CASCADE ON UPDATE NO ACTION
+    );
+
+
+
+////////////
+  ///Таблиця для оповіщень
+  //якщо в ній є запис особова картка + тип документу, то даний тип документу не внесено
+    CREATE TABLE BEE_PERSON_DOCUMENT_TYPE
+                    (ID bigserial  PRIMARY KEY,
+                     Person_id bigserial,
+                     type_id bigserial,
+                     CONSTRAINT fk_pdt_person FOREIGN KEY (Person_id)
+                     REFERENCES bee_person (ID)
+                     ON DELETE CASCADE,
+                     CONSTRAINT fk_pdt_type FOREIGN KEY (type_id)
+                     REFERENCES bee_document_type (ID)
+                     ON DELETE CASCADE
+                                );

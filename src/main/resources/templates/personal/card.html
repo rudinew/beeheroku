@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title th:text="#{title.site}"></title>
+
+    <div th:replace="fragments/headerPerson :: header-css"/>
+</head>
+
+<body>
+
+    <div id="wrapper">
+
+       <!-- <div th:include="fragments/headerPerson" th:remove="tag" /> -->
+        <div th:replace="fragments/headerPerson :: header"/>
+
+        <!-- Page Content -->
+         <div id="page-wrapper">
+             <div class="row">
+                 <div class="col-lg-12">
+                     <h3 class="page-header text-primary"><span th:text = "#{header.menu.card}" > </span> <!-- <span th:text = "${beePerson.getName()}"> </span> -->
+
+                     </h3> <!--"${personOne.name}"-->
+
+                 </div>
+                 <!-- /.col-lg-12 -->
+             </div>
+
+        <div class="panel-body">
+           <div class="row">
+               <div class="col-lg-12">
+                   <a th:href="${'/card/' + beePerson.id + '/edit'}" ><button type="button" class="btn btn-outline btn-primary" aria-label="Right Align">
+                       <span class="fa fa-edit" aria-hidden="true"></span><span th:text = "#{header.menu.card}" > </span>
+
+                   </button></a>
+               </div>
+           </div>
+        </div>
+             <!-- /.panel-body -->
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <!--  <div class="panel-heading">   </div> -->
+                        <div class="panel-body">
+
+                <form role="form" enctype="multipart/form-data"
+                      th:object="${beePerson}" th:action="'#'"
+                      th:method="${beePerson['new']} ? 'post' : 'put'"
+                >
+
+                    <!-- /.col-lg-6 -->
+                    <!-- / блок ПІБ -->
+                    <div class="row">
+                        <div class="col-lg-8">
+                    <div class="row">
+                    <div class="col-lg-7">
+                        <div class="well">
+                            <!--  <input type = "hidden" th:field="*{personOne.id}" th:if="${not #lists.isEmpty(personOne)}" /> -->
+                            <div class="form-group">
+                                <label><span th:text = "#{page.column.lastname}" > </span></label>
+                                <input id="lastname" type = "text" class="form-control" readonly="readonly" name="lastname" th:field="*{lastname}" />
+                            </div>
+
+                            <div class="form-group">
+                                <label><span th:text = "#{page.column.firstname}" > </span></label>
+                                <!-- <input type = "text" class="form-control" name="firstname" /> -->
+                                <input id="firstname" type = "text" class="form-control" readonly="readonly"  name="firstname" th:field="*{firstname}" />
+                            </div>
+                            <div class="form-group">
+                                <label><span th:text = "#{page.column.middlename}" > </span></label>
+                                <input id="middlename" type = "text" class="form-control" readonly="readonly" name="middlename" th:field="*{middlename}" />
+                                <!--  <p class="help-block">Example block-level help text here.</p> -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /ПІБ -->
+
+                    <!-- photo -->
+                    <div class="col-lg-4">
+                        <table class="well2" >
+
+                            <tr th:if="${beePerson.getNrOfBeePersonFiles() == 0}"  >
+                                <td > <!-- width="60" height="200" -->
+                                    <img width="210" th:src="@{/static/images/ava.jpg}" src="/static/images/ava.jpg"/>
+
+                                </td>
+                            </tr>
+
+                            <tr th:if="${beePerson.getNrOfBeePersonFiles()} > 0" th:each="photo : ${beePerson.getBeePersonFiles()}"  >
+                                <td> <!-- width="60" height="200" -->
+                                      <img width="210" th:src="${'/card/'+beePerson.getId() +'/photo/'+photo.getId()}"/>
+
+
+                                </td>
+                            </tr>
+
+
+                        </table>
+
+                    </div>
+                   </div> <!-- row -->
+                        </div>
+                    </div>
+                    <!-- ********************************************************** -->
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="well">
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                        <label><span th:text = "#{page.column.birthdt}" > </span></label>
+                                        <input id="datebirth" type =  "text" readonly="readonly"  class="form-control" name="datebirth"  th:field="*{datebirth}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="form-group">
+                                        <label><span th:text = "#{page.column.birthplace}" > </span></label>
+                                        <input id="placebirth" type = "text" readonly="readonly"  class="form-control" name="placebirth" th:field="*{placebirth}" />
+                                   </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                        <label><span th:text = "#{page.column.gender}" > </span></label>
+                                       <select class="form-control" disabled="disabled" name="gender" th:field="*{gender}">
+                                            <option
+                                                    th:selected = "selected"
+                                                    th:value="1"
+                                                    th:text="#{card.gender.man}" ></option>
+                                            <option
+                                                    th:value="2"
+                                                    th:text="#{card.gender.woman}"></option>
+
+
+                                        </select>
+                                            </div>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="form-group">
+                                        <label><span th:text = "#{page.column.phone}" > </span></label>
+                                        <input id="phone" type = "text" readonly="readonly"  class="form-control" name="phone" th:field="*{phone}" />
+                                  </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                        <label><span th:text = "#{page.column.familystatus}" > </span></label>
+                                       <select class="form-control" disabled="disabled" name="familystatus" th:field="*{familystatus}" >
+                                            <option
+                                                    th:selected = "selected"
+                                                    th:value="1"
+                                                    th:text="#{card.familystatus.hemarried}" ></option>
+                                            <option
+                                                    th:value="2"
+                                                    th:text="#{card.familystatus.heunmarried}"></option>
+                                            <option
+                                                    th:value="3"
+                                                    th:text="#{card.familystatus.shemarried}" ></option>
+                                            <option
+                                                    th:value="4"
+                                                    th:text="#{card.familystatus.sheunmarried}"></option>
+                                            <option
+                                                    th:value="5"
+                                                    th:text="#{card.familystatus.hedivorce}" ></option>
+                                            <option
+                                                    th:value="6"
+                                                    th:text="#{card.familystatus.shedivorce}"></option>
+                                            <option
+                                                    th:value="7"
+                                                    th:text="#{card.familystatus.widower}" ></option>
+                                            <option
+                                                    th:value="8"
+                                                    th:text="#{card.familystatus.widow}"></option>
+
+                                        </select>
+                                            </div>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="form-group">
+                                        <label>e_mail</label>
+                                        <input id="email" type = "text" readonly="readonly"  class="form-control" name="phone" th:field="*{email}" />
+                                  </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                        <label><span th:text = "#{page.column.citizenship}" > </span></label>
+                                        <input id="beeCitizenship" type =  "text" readonly="readonly"  class="form-control" name="beeCitizenship"  th:value="${beePerson.getBeeCitizenship().getName()}" />
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <div class="form-group">
+                                        <label><span th:text = "#{page.column.socialnetworks}" > </span></label>
+                                        <input id="socialnetworks" type = "text" readonly="readonly"  class="form-control" name="socialnetworks" th:field="*{socialnetworks}" />
+                                      </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-12">
+
+                                        <div class="form-group">
+                                            <label><span th:text = "#{page.column.addressregistration}" > </span></label>
+                                            <input id="addressregistration" type =  "text" readonly="readonly"  class="form-control" name="addressregistration"  th:field="*{addressregistration}"  />
+
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label><span th:text = "#{page.column.addresslive}" > </span></label>
+                                            <input id="addresslive" type = "text" readonly="readonly"  class="form-control" name="addresslive" th:field="*{addresslive}" />
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- ********************************************************** -->
+
+
+                </form>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+                <!--  </div>
+                 /.row (nested) -->
+
+
+
+
+    </div>
+    <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+    <div th:replace="fragments/footer :: footer"/>
+</body>
+
+</html>
