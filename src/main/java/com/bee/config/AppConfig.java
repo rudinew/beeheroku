@@ -1,42 +1,45 @@
 package com.bee.config;
 
-import com.bee.backend.service.data.BeeDocumentServiceImpl;
-import com.bee.backend.service.data.BeePersonServiceImpl;
 import com.bee.backend.service.security.UserDetailsServiceImpl;
+import com.zaxxer.hikari.HikariDataSource;
 
-import org.apache.commons.dbcp.BasicDataSource;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.web.servlet.MultipartConfigFactory;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
 import org.springframework.context.annotation.Primary;
 
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.JpaVendorAdapter;
-import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
-import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
-import javax.persistence.EntityManagerFactory;
-import javax.servlet.MultipartConfigElement;
-import javax.sql.DataSource;
-import java.net.URI;
-import java.net.URISyntaxException;
+
+
 import java.util.Locale;
-import java.util.Properties;
+
 
 @Configuration
 public class AppConfig extends WebMvcConfigurerAdapter {
 
-    @Value("${spring.datasource.driver-class-name}")
+    @Bean
+    @Primary
+    @ConfigurationProperties("spring.datasource")
+    public DataSourceProperties dataSourceProperties() {
+        return new DataSourceProperties();
+    }
+
+    @Bean
+    @ConfigurationProperties("spring.datasource")
+    public HikariDataSource dataSource(DataSourceProperties properties) {
+        return (HikariDataSource) properties.initializeDataSourceBuilder()
+                .type(HikariDataSource.class).build();
+    }
+
+  /*  @Value("${spring.datasource.driver-class-name}")
     private String jdbcDriver;
 
     @Value("${spring.datasource.url}")
@@ -87,7 +90,7 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         ds.setPassword(jdbcPassword);
 
         return ds;
-    }
+    }*/
 
    /* @Bean
     public BasicDataSource dataSource() throws URISyntaxException {
@@ -105,12 +108,12 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         return basicDataSource;
     }
 */
-    private Properties additionalProperties() {
+ /*   private Properties additionalProperties() {
         Properties properties = new Properties();
         properties.setProperty("hibernate.hbm2ddl.auto", "validate");
         return properties;
     }
-
+*/
 
     /**
      * i18n
@@ -136,31 +139,22 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(localeChangeInterceptor());
     }
 
-
     @Bean
     public UserDetailsServiceImpl userDetailsService() {
         return new UserDetailsServiceImpl();
     }
 
-    @Bean
-    public BeePersonServiceImpl beePersonService() {
-        return new BeePersonServiceImpl();
-    }
 
-    @Bean
-    public BeeDocumentServiceImpl beeDocumentService() {
-        return new BeeDocumentServiceImpl();
-    }
 
     /**
      * http://spring-projects.ru/guides/uploading-files/#scratch
      * @return
      */
-    @Bean
+  /*  @Bean
     MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
         // factory.setMaxFileSize(20971520);   // 20MB
         //factory.setMaxRequestSize(6637495);  // 1MB  //(1048576)  разобраться!!!!
         return factory.createMultipartConfig();
-    }
+    }*/
 }

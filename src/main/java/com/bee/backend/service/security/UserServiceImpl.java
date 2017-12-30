@@ -1,33 +1,27 @@
 package com.bee.backend.service.security;
 
-import com.bee.backend.domain.data.BeeDocNotification;
-import com.bee.backend.domain.data.BeeDocType;
+
 import com.bee.backend.domain.security.BeeUsers;
-import com.bee.backend.repositories.data.BeeDocNotificationRepository;
 import com.bee.backend.repositories.security.UserRepository;
-import com.bee.backend.service.data.BeeTypeService;
-//import com.bee.backend.service.data.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.mail.MailException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
 @Service
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
-  //  @Autowired
-  //  private EmailService emailService;
+   /* @Autowired
+    private EmailService emailService;
 
     @Autowired
     private BeeDocNotificationRepository beeDocNotificationRepository;
 
     @Autowired
-    private BeeTypeService beeTypeService;
+    private BeeTypeService beeTypeService;*/
 
     @Override
     @Transactional(readOnly = true)
@@ -72,11 +66,11 @@ public class UserServiceImpl implements UserService {
 
         //Налаштування
         //вставка всіх типів доків, для налаштування користувачем чи обовязково до заповнення
-        List<BeeDocType> beeDocTypes = beeTypeService.getBeeDocTypeAll();
+     /*   List<BeeDocType> beeDocTypes = beeTypeService.getBeeDocTypeAll();
         for (BeeDocType itemType : beeDocTypes){
-                BeeDocNotification beeDocNotification = new BeeDocNotification(itemType.getIs_required(), itemType, bUser);
-                beeDocNotificationRepository.saveAndFlush(beeDocNotification);
-            }
+            BeeDocNotification beeDocNotification = new BeeDocNotification(itemType.getIs_required(), itemType, bUser);
+            beeDocNotificationRepository.saveAndFlush(beeDocNotification);
+        }*/
 
 
     }

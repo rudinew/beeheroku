@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title th:text="#{title.site}"></title>
+
+    <!-- Bootstrap Core CSS ../   /static -->
+    <!--href="../static/vendor/bootstrap/css/bootstrap.min.css" -->
+    <link href="../../static/vendor/bootstrap/css/bootstrap.min.css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+
+    <!-- MetisMenu CSS -->
+    <!--href="../static/vendor/metisMenu/metisMenu.min.css" -->
+    <link href="../../static/vendor/metisMenu/metisMenu.min.css"  th:href="@{/vendor/metisMenu/metisMenu.min.css}" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <!--href="../static/dist/css/sb-admin-2.css" -->
+    <link href="../../static/dist/css/sb-admin-2.css" th:href="@{/dist/css/sb-admin-2.css}" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <!-- href="../static/vendor/font-awesome/css/font-awesome.min.css"-->
+    <link href="../../static/vendor/font-awesome/css/font-awesome.min.css" th:href="@{/vendor/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css" />
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+<!-- Navigation -->
+<nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" th:href="@{/}"   th:inline="text">  <img height="30" align="left" th:src="@{/static/images/favicon.ico}" src="/static/images/favicon.ico"/><span th:text="'     '+ #{title.site}"></span></a>
+    </div>
+    <!--  /.navbar-header -->
+
+
+
+</nav>
+
+<div class="container">
+    <br/><br/>
+    <div class="row">
+        <div class="col-md-4 col-md-offset-4">
+            <div class="panel panel-default"> <!-- login-panel  отступ сверху-->
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span th:text = "#{page.header.personalOffice}" > </span></h3>
+                </div>
+                <div class="panel-body">
+
+                    <form th:action="@{/j_spring_security_check}" method="post"> <!-- action="@{/j_spring_security_check}" -->
+
+                        <fieldset>
+                            <div class="form-group">
+                                <input class="form-control" th:placeholder="#{page.column.login}" name="j_login" type="text"  autofocus="autofocus" value="admin"/> <!-- autofocus -->
+                            </div>
+                            <div class="form-group">
+                                <input class="form-control" th:placeholder="#{page.column.password}"  name="j_password" type="password" value="admin" />  <!-- value="" -->
+                            </div>
+                            <div class="form-group">
+                                <div class="col-xs-6">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input name="remember-me" type="checkbox" value="true" /><span th:text = "#{page.column.rememberme}" > </span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-xs-6">
+                                    <a th:href="@{/signup}">
+                                        <button type="button" class="btn btn-default" ><span th:text = "#{page.button.register}" > </span> </button>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <input type="submit" class="btn btn-lg btn-success btn-block" th:value="#{page.button.logIn}" />
+
+
+
+
+                            <!--   <c:if test="${param.error ne null}">
+                                  <br/>
+                                  <p><b>Невірний пароль або логін!</b></p>
+                            </c:if>-->
+
+                            <p th:if="${param.error ne null}"><b><span th:text = "#{login.error}" > </span></b></p> <!-- ${loginError} ${param.error ne null}-->
+
+                        </fieldset>
+
+                    </form>
+                    <!--   </form>-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h3 class="text-primary">
+                BEE systems  <!--  <span th:text = " #{page.header.access} + ' - ' + ${beePerson.getName()}" > </span> -->
+            </h3>
+            <p class="lead" th:text="#{index.phrase1}"> </p>
+            <p class="lead"><span class="text-primary" th:text="#{index.phrase2}"></span> <span th:text="' ' + #{index.phrase3}"></span></p>
+
+        </div>
+        <!-- /.col-lg-12 -->
+    </div>
+</div>
+
+<!-- jQuery -->
+<!-- src="../static/vendor/jquery/jquery.min.js" -->
+<script type="text/javascript" src="../../static/vendor/jquery/jquery.min.js"  th:src="@{/vendor/jquery/jquery.min.js}" ></script>
+
+<!-- Bootstrap Core JavaScript -->
+<!-- src="../static/vendor/bootstrap/js/bootstrap.min.js" -->
+<script type="text/javascript" src="../../static/vendor/bootstrap/js/bootstrap.min.js}"   th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
+
+<!-- Metis Menu Plugin JavaScript -->
+<!--  src="../static/vendor/metisMenu/metisMenu.min.js" -->
+<script type="text/javascript" src="../../static/vendor/metisMenu/metisMenu.min.js"  th:src="@{/vendor/metisMenu/metisMenu.min.js}"></script>
+
+<!-- Custom Theme JavaScript -->
+<!-- src="../static/dist/js/sb-admin-2.js"  -->
+<script type="text/javascript" src="../../static/dist/js/sb-admin-2.js}" th:src="@{/dist/js/sb-admin-2.js}"></script>
+
+
+
+</body>
+
+</html>

@@ -16,6 +16,7 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.9.RELEASE</version>
 		<relativePath/> <!-- lookup parent from repository -->
+
 	</parent>
 
 	<properties>
@@ -28,6 +29,7 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -41,35 +43,24 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		<!--<dependency>
+
+
+
+		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
-		</dependency> -->
-
-		<!-- heroku
-        https://github.com/heroku/devcenter-java-database/blob/master/devcenter-java-database-spring-java/pom.xml
-
-Disabling contextual LOB creation as createClob() method threw error : java.lang.reflect.InvocationTargetException
-   -->
-		<dependency>
-			<groupId>commons-dbcp</groupId>
-			<artifactId>commons-dbcp</artifactId>
-			<version>1.4</version>
+			<version>2.7.4</version>
 		</dependency>
+
+
 
 
 		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
 		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>9.4-1200-jdbc41</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<optional>true</optional>
-		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -102,31 +93,24 @@ Disabling contextual LOB creation as createClob() method threw error : java.lang
 			<artifactId>jackson-datatype-joda</artifactId>
 		</dependency>
 
-		<!-- Spring boot version 1.5.4  has  hibernate-core 5.0.12 which is incompatible with jadira version 6.0.1.GA -->
+		<!-- have error - error creating bean with name 'entitymanagerfactory' defined in class path resource
+		  solution https://stackoverflow.com/questions/40058001/error-creating-bean-with-name-entitymanagerfactory-defined-in-class-path-resou
+		-->
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-core -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>5.2.10.Final</version>
+			<version>5.2.12.Final</version>
 		</dependency>
-		<!-- Spring boot version 1.5.4  has  hibernate-entitymanager 5.0.12 which is incompatible with jadira version 6.0.1.GA -->
+
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-entitymanager -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>5.2.10.Final</version>
+			<version>5.2.12.Final</version>
 		</dependency>
-		<!-- https://easyjava.ru/data/jpa/jpa-criteria/ -->
-		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-jpamodelgen -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-jpamodelgen</artifactId>
-			<version>4.3.11.Final</version>
-			<scope>provided</scope>
-		</dependency>
-		<!--<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-test</artifactId>
-			<scope>test</scope>
-		</dependency> -->
+
+
 	</dependencies>
 
 	<build>
@@ -136,20 +120,7 @@ Disabling contextual LOB creation as createClob() method threw error : java.lang
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-					<encoding>UTF-8</encoding>
 
-					<compilerArguments>
-						<processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
-					</compilerArguments>
-
-				</configuration>
-			</plugin>
 
 			<!-- heroku-->
 			<plugin>

@@ -1,10 +1,8 @@
 package com.bee.backend.domain.security;
 
 import com.bee.backend.domain.BaseEntity;
-import com.bee.backend.domain.data.BeeDocNotification;
 import com.bee.web.validators.ValidEmail;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
+
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -50,7 +48,7 @@ public class BeeUsers extends BaseEntity {
     private String confirmPassword;
     //https://stackoverflow.com/questions/8038939/map-a-tinyint-as-boolean-hibernate
     @Column(name = "is_active", columnDefinition = "INTEGER")
-    @Type(type = "org.hibernate.type.NumericBooleanType")
+   // @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean is_active;
     @Enumerated(EnumType.STRING)
     private UserRole role;
@@ -63,25 +61,21 @@ public class BeeUsers extends BaseEntity {
     private LocalDate dtFrom;
 
     //Relation
-    @OneToMany(mappedBy="beeParentUsers", fetch = FetchType.LAZY)
-    //when private then in indexOLD.html - Property or field 'beeTaxes' cannot be found on object of type 'com.bee.domain.BeePerson' - maybe not public?
+ /*   @OneToMany(mappedBy="beeParentUsers", fetch = FetchType.LAZY)
     public List<BeeUsersRelation> beeUsersRelationsfromParent = new ArrayList<BeeUsersRelation>();
-    //from petclinic
-    //protected
+
     public  List<BeeUsersRelation> getBeeUsersRelationsfromParent() {
         if (this.beeUsersRelationsfromParent == null) {
             this.beeUsersRelationsfromParent = new ArrayList<BeeUsersRelation>();
         }
         return this.beeUsersRelationsfromParent;
-    }
+    }*/
 
     ///
     //BEEDOCNOTIFICATION
-    @OneToMany(mappedBy="beeUsers", fetch = FetchType.LAZY)
+   /* @OneToMany(mappedBy="beeUsers", fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
     public List<BeeDocNotification> beeDocNotifications = new ArrayList<BeeDocNotification>();
-    //from petclinic
-    //protected
     public  List<BeeDocNotification> getBeeDocNotifications() {
         if (this.beeDocNotifications == null) {
             this.beeDocNotifications = new ArrayList<BeeDocNotification>();
@@ -97,6 +91,7 @@ public class BeeUsers extends BaseEntity {
     public int getNrOfBeeDocNotifications() {
         return getBeeDocNotifications().size();
     }
+    */
     ///
 
     public BeeUsers() {
