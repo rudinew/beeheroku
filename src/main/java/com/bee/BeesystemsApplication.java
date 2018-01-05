@@ -6,14 +6,14 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class BeesystemsApplication /*for Tomcat  extends SpringBootServletInitializer*/ {
+public class BeesystemsApplication /*for Tomcat */ extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BeesystemsApplication.class, args);
 	}
-/*
+
 	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(BeesystemsApplication.class);
-	}*/
+	}
 }
