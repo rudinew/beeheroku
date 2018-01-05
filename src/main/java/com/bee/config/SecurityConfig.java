@@ -1,5 +1,6 @@
 package com.bee.config;
 
+import com.bee.web.controllers.SignupController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.Bean;
@@ -58,11 +59,11 @@ password
     private static final String[] PUBLIC_MATCHERS = {
             "/static/**",
             "/vendor/**",
-            "/dist/**" //,
+            "/dist/**",
             //  ForgotMyPasswordController.FORGOT_PASSWORD_URL_MAPPING,
             //      ForgotMyPasswordController.CHANGE_PASSWORD_PATH,
-            //SignupController.SIGNUP_URL_MAPPING,
-            //SignupController.SIGNUP_SUCCESS_URL_MAPPING
+            SignupController.SIGNUP_URL_MAPPING,
+            SignupController.SIGNUP_SUCCESS_URL_MAPPING
     };
 
     @Override

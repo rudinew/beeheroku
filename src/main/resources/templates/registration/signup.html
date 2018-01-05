@@ -1,10 +1,210 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title th:text="#{title.site}"></title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/vendor/bootstrap/css/bootstrap.min.css" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+
+    <!-- MetisMenu CSS -->
+    <link href="../static/vendor/metisMenu/metisMenu.min.css" th:href="@{/vendor/metisMenu/metisMenu.min.css}" rel="stylesheet" />
+
+    <!-- Custom CSS -->
+    <link href="../static/dist/css/sb-admin-2.css" th:href="@{/dist/css/sb-admin-2.css}" rel="stylesheet" />
+
+    <!-- Custom Fonts -->
+    <link href="../static/vendor/font-awesome/css/font-awesome.min.css" th:href="@{/vendor/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css" />
+
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- https://itchief.ru/lessons/bootstrap-3/113-bootstrap-3-datetimepicker -->
+    <!-- jQuery -->
+    <script type="text/javascript" th:src="@{/vendor/jquery/jquery-1.11.1.min.js}" ></script> <!--jquery.min.js -->
+
+    <!-- <script type="text/javascript" th:src="@{/static/vendor/bootstrap/js/moment.js}"></script> -->
+    <script type="text/javascript" th:src="@{/vendor/bootstrap/js/moment-with-locales.min.js}"></script>
+    <!-- Bootstrap Core JavaScript -->
+    <script type="text/javascript"  th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
+
+    <script type="text/javascript" th:src="@{/vendor/bootstrap/js/bootstrap-datetimepicker.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/vendor/bootstrap/css/bootstrap-datetimepicker.min.css}" />
+
 </head>
+
 <body>
 
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker( {pickTime: false, language: 'uk'});
+    });
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-5 col-md-offset-4">
+            <div class="panel panel-default"> <!--"login-panel panel panel-default" -->
+                <div class="panel-heading">
+                    <h3 class="panel-title"><span th:text="#{page.header.registration}"></span></h3>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form role="form"
+                                  th:object="${beeUsers}" th:action="'#'"
+                                  th:method="'post'"
+                            >
+                                <div class="well">
+                                    <!-- <ul th:if="${#fields.hasErrors('*')}" class="errorlist">
+                                         <li th:each="err : ${#fields.errors('*')}" th:text="${err}">Input is incorrect</li>
+                                     </ul>
+                                     -->
+                                    <!--  <input type = "hidden" th:field="*{personOne.id}" th:if="${not #lists.isEmpty(personOne)}" /> -->
+                                    <div class="form-group">
+                                        <label><span th:text="#{page.column.lastname}"></span></label>
+                                        <input id="lastname" type = "text" class="form-control" name="lastname" th:field="*{lastname}"  /> <!-- "*{getBeePerson().getLastname()}" -->
+                                    </div>
+                                    <div class="has-error">
+                                        <p class="help-block" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}" >lastname Error
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label><span th:text="#{page.column.firstname}"></span></label>
+                                        <!-- <input type = "text" class="form-control" name="firstname" /> -->
+                                        <input id="firstname" type = "text" class="form-control" name="firstname" th:field="*{firstname}" />
+                                    </div>
+                                    <div class="has-error">
+                                        <p class="help-block" th:if="${#fields.hasErrors('firstname')}" th:errors="*{firstname}" >firstname Error
+                                        </p>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label><span th:text="#{page.column.middlename}"></span></label>
+                                        <input id="middlename" type = "text" class="form-control" name="middlename" th:field="*{middlename}" />
+                                        <!--  <p class="help-block">Example block-level help text here.</p> -->
+                                    </div>
+                                    <div class="has-error">
+                                        <p class="help-block" th:if="${#fields.hasErrors('middlename')}" th:errors="*{middlename}" >middlename Error
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="well">
+                                    <!--  <input type = "hidden" th:field="*{personOne.id}" th:if="${not #lists.isEmpty(personOne)}" /> -->
+                                    <div class="form-group">
+                                        <label><span th:text="#{page.column.birthdt}"></span></label>
+                                        <div class="input-group date" id="datetimepicker1">
+                                            <input type="text" class="form-control"  name="datebirth" th:field="*{datebirth}"  />
+                                                     <span class="input-group-addon">
+                                                     <span class="glyphicon-calendar glyphicon"></span>
+                                                      </span>
+                                        </div>
+                                        <div class="has-error">
+                                            <p class="help-block" th:if="${#fields.hasErrors('datebirth')}" th:errors="*{datebirth}" >datebirth Error
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label><span th:text="#{page.column.gender}"></span></label>
+                                        <select class="form-control" name="gender" th:field="*{gender}">
+                                            <option
+                                                    th:selected = "selected"
+                                                    th:value="1"
+                                                    th:text="#{card.gender.man}" ></option>
+                                            <option
+                                                    th:value="2"
+                                                    th:text="#{card.gender.woman}"></option>
+
+
+                                        </select>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>E_mail</label>
+                                        <!-- <input type = "text" class="form-control" name="firstname" /> -->
+                                        <input id="email" type = "text" class="form-control" name="email" th:field="*{email}" />
+                                    </div>
+                                    <div class="has-error">
+                                        <p class="help-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}" >email Error
+                                        </p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><span th:text="#{page.column.phone}"></span></label>
+                                        <input id="phone" type = "text" class="form-control" name="phone" th:field="*{phone}" />
+                                        <!--  <p class="help-block">Example block-level help text here.</p> -->
+                                    </div>
+                                </div>
+                                <div class="well">
+                                    <div class="form-group">
+                                        <label ><span th:text="#{page.column.login}"></span></label>
+                                        <input type="text" class="form-control" id="login" placeholder="Введіть логін" th:field="*{login}"  />
+
+                                    </div>
+                                    <div class="has-error">
+                                        <p class="help-block" th:if="${#fields.hasErrors('login')}" th:errors="*{login}" >login Error
+                                        </p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label ><span th:text="#{page.column.password}"></span></label>
+                                        <input type="password" class="form-control" id="inputPassword" placeholder="Введіть пароль" th:field="*{password}"  />
+
+                                    </div>
+                                    <div class="has-error">
+                                        <p class="help-block" th:if="${#fields.hasErrors('password')}" th:errors="*{password}" >password Error
+                                        </p>
+                                    </div>
+                                    <div class="form-group">
+                                        <label><span th:text="#{page.column.confirmPassword}"></span></label>
+                                        <input type="password" class="form-control" id="confirmPassword" placeholder="Введіть пароль ще раз" th:field="*{confirmPassword}" />
+
+                                    </div>
+                                    <div class="has-error">
+                                        <p class="help-block" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" >confirmPassword Error
+                                        </p>
+                                    </div>
+
+                                </div>
+
+                                <input type="submit" class="btn btn-lg btn-success btn-block"  th:value="#{page.button.register}" />
+
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Metis Menu Plugin JavaScript -->
+<script type="text/javascript"  src="../static/vendor/metisMenu/metisMenu.min.js" th:src="@{/vendor/metisMenu/metisMenu.min.js}"></script>
+
+<!-- Custom Theme JavaScript -->
+<script type="text/javascript"  src="../static/dist/js/sb-admin-2.js" th:src="@{/dist/js/sb-admin-2.js}"></script>
+
+
+
 </body>
+
 </html>

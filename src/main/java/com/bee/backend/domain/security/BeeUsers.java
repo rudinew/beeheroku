@@ -48,7 +48,7 @@ public class BeeUsers extends BaseEntity {
     private String confirmPassword;
     //https://stackoverflow.com/questions/8038939/map-a-tinyint-as-boolean-hibernate
     @Column(name = "is_active", columnDefinition = "INTEGER")
-   // @Type(type = "org.hibernate.type.NumericBooleanType")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean is_active;
     @Enumerated(EnumType.STRING)
     private UserRole role;
