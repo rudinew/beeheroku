@@ -93,20 +93,20 @@ ALTER TABLE bee_person_file
 
    update bee_document_type set is_required = TRUE where id in (2,3)
 
-       insert into bee_document_type (NAME, ALIAS) VALUES ('Паспорт закордонний', 'passport_out', 0);
-       insert into bee_document_type (NAME, ALIAS) VALUES ('Паспорт України', 'passport_in', 1);
-       insert into bee_document_type (NAME, ALIAS) VALUES ('ІПН', 'tax', 1);
-       insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про народження дитини', 'birth_child', 0);
-       insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про народження', 'birth', 0);
-       insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про шлюб', 'marriage', 0);
-       insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про розлучення', 'divorce', 0);
-       insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про смерть', 'death', 0);
-       insert into bee_document_type (NAME, ALIAS) VALUES ('Атестат', 'school_certificate', 0);
-       insert into bee_document_type (NAME, ALIAS) VALUES ('Диплом бакалавра', 'bachelor', 0);
-       insert into bee_document_type (NAME, ALIAS) VALUES ('Диплом спеціаліста', 'specialist', 0);
-       insert into bee_document_type (NAME, ALIAS) VALUES ('Диплом магістра', 'master', 0);
-       insert into bee_document_type (NAME, ALIAS) VALUES ('Сертифікат', 'certificate', 0);
-       insert into bee_document_type (NAME, ALIAS) VALUES ('Інше', 'other', 0);
+     insert into bee_document_type (NAME, ALIAS) VALUES ('Паспорт закордонний', 'passport_out');
+     insert into bee_document_type (NAME, ALIAS) VALUES ('Паспорт України', 'passport_in');
+     insert into bee_document_type (NAME, ALIAS) VALUES ('ІПН', 'tax');
+     insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про народження дитини', 'birth_child');
+     insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про народження', 'birth');
+     insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про шлюб', 'marriage');
+     insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про розлучення', 'divorce');
+     insert into bee_document_type (NAME, ALIAS) VALUES ('Свідоцтво про смерть', 'death');
+     insert into bee_document_type (NAME, ALIAS) VALUES ('Атестат', 'school_certificate');
+     insert into bee_document_type (NAME, ALIAS) VALUES ('Диплом бакалавра', 'bachelor');
+     insert into bee_document_type (NAME, ALIAS) VALUES ('Диплом спеціаліста', 'specialist');
+     insert into bee_document_type (NAME, ALIAS) VALUES ('Диплом магістра', 'master');
+     insert into bee_document_type (NAME, ALIAS) VALUES ('Сертифікат', 'certificate');
+     insert into bee_document_type (NAME, ALIAS) VALUES ('Інше', 'other');
 ///////////
  CREATE TABLE BEE_CITIZENSHIP(ID bigserial  PRIMARY KEY,
                         NAME VARCHAR(255) NOT NULL);
@@ -223,3 +223,7 @@ CREATE TABLE BEE_DOC_NOTIFICATION (
                      REFERENCES bee_document_type (ID)
                      ON DELETE CASCADE
                                 );
+/////////////////
+12.01.2018 test
+alter table bee_document_file drop column file;
+alter table bee_person_file drop column file;

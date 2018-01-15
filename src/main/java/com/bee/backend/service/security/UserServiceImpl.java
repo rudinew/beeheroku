@@ -1,8 +1,10 @@
 package com.bee.backend.service.security;
 
 
+
 import com.bee.backend.domain.security.BeeUsers;
 import com.bee.backend.repositories.security.UserRepository;
+import com.bee.backend.service.data.BeeTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -15,13 +17,13 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
    /* @Autowired
-    private EmailService emailService;
+    private EmailService emailService;*/
 
-    @Autowired
+  /*  @Autowired
     private BeeDocNotificationRepository beeDocNotificationRepository;
-
+*/
     @Autowired
-    private BeeTypeService beeTypeService;*/
+    private BeeTypeService beeTypeService;
 
     @Override
     @Transactional(readOnly = true)
@@ -66,7 +68,7 @@ public class UserServiceImpl implements UserService {
 
         //Налаштування
         //вставка всіх типів доків, для налаштування користувачем чи обовязково до заповнення
-     /*   List<BeeDocType> beeDocTypes = beeTypeService.getBeeDocTypeAll();
+       /* List<BeeDocType> beeDocTypes = beeTypeService.getBeeDocTypeAll();
         for (BeeDocType itemType : beeDocTypes){
             BeeDocNotification beeDocNotification = new BeeDocNotification(itemType.getIs_required(), itemType, bUser);
             beeDocNotificationRepository.saveAndFlush(beeDocNotification);

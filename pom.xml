@@ -46,13 +46,13 @@
 
 
 
-		<dependency>
+	<!-- 	<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
 			<version>2.7.4</version>
 		</dependency>
 
-
+-->
 
 
 		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
@@ -110,7 +110,18 @@
 			<version>5.2.12.Final</version>
 		</dependency>
 
-
+		<!-- from gs-validating-form-input
+                     https://spring.io/guides/gs/validating-form-input/ -->
+	<!--	<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>5.3.3.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency> -->
 	</dependencies>
 
 	<build>

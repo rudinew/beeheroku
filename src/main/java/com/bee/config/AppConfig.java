@@ -1,31 +1,59 @@
 package com.bee.config;
 
-import com.bee.backend.service.security.UserDetailsServiceImpl;
-import com.zaxxer.hikari.HikariDataSource;
 
-import org.springframework.boot.autoconfigure.jdbc.DataSourceProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import com.bee.backend.service.data.BeePersonServiceImpl;
+import com.bee.backend.service.security.UserDetailsServiceImpl;
+
+
+
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Value;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import org.springframework.context.annotation.Primary;
 
+import org.springframework.context.annotation.PropertySource;
+
+
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.i18n.CookieLocaleResolver;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 
-
-
+import javax.persistence.EntityManagerFactory;
 import java.util.Locale;
-
+import java.util.Properties;
 
 @Configuration
+@PropertySource("classpath:application.properties")
+@EnableTransactionManagement
 public class AppConfig extends WebMvcConfigurerAdapter {
 
-    @Bean
+    @Value("${spring.jpa.hibernate.ddl-auto}")
+    private String ddlauto;
+    @Value("${spring.jpa.hibernate.dialect}")
+    private String dialect;
+    @Value("${spring.datasource.driver-class-name}")
+    private String driver;
+    @Value("${spring.datasource.url}")
+    private String url;
+    @Value("${spring.datasource.username}")
+    private String username;
+    @Value("${spring.datasource.password}")
+    private String password;
+
+
+  /*  @Bean
     @Primary
     @ConfigurationProperties("spring.datasource")
     public DataSourceProperties dataSourceProperties() {
@@ -35,85 +63,61 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Bean
     @ConfigurationProperties("spring.datasource")
     public HikariDataSource dataSource(DataSourceProperties properties) {
+
         return (HikariDataSource) properties.initializeDataSourceBuilder()
                 .type(HikariDataSource.class).build();
-    }
-
-  /*  @Value("${spring.datasource.driver-class-name}")
-    private String jdbcDriver;
-
-    @Value("${spring.datasource.url}")
-    private String jdbcURL;
-
-    @Value("${spring.datasource.username}")
-    private String jdbcUsername;
-
-    @Value("${spring.datasource.password}")
-    private String jdbcPassword;
-
-    @Value("${hibernate.dialect}")
-    private String sqlDialect;
-
-
-
-    @Bean
-    public LocalContainerEntityManagerFactoryBean entityManagerFactory
-            (DataSource dataSource, JpaVendorAdapter jpaVendeorAdapter) {
-        LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
-        entityManagerFactory.setDataSource(dataSource);
-        entityManagerFactory.setJpaVendorAdapter(jpaVendeorAdapter);
-        entityManagerFactory.setJpaProperties(additionalProperties());
-        entityManagerFactory.setPackagesToScan("com.bee");
-        return entityManagerFactory;
-    }
-
-    @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory emf) {
-        return new JpaTransactionManager(emf);
-    }
-
-    @Bean
-    public JpaVendorAdapter jpaVendorAdapter() {
-        HibernateJpaVendorAdapter adapter = new HibernateJpaVendorAdapter();
-        adapter.setShowSql(false); //15.06.2017 не показывать sql
-        adapter.setDatabasePlatform(sqlDialect);
-
-        return adapter;
-    }
-
-    @Bean
-    public DataSource dataSource() {
-        DriverManagerDataSource ds = new DriverManagerDataSource();
-        ds.setDriverClassName(jdbcDriver);
-        ds.setUrl(jdbcURL);
-        ds.setUsername(jdbcUsername);
-        ds.setPassword(jdbcPassword);
-
-        return ds;
     }*/
+  //http://www.baeldung.com/the-persistence-layer-with-spring-and-jpa
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() {
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource());
+        em.setPackagesToScan(new String[] { "com.bee" });
+
+        JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+        em.setJpaVendorAdapter(vendorAdapter);
+        em.setJpaProperties(additionalProperties());
+
+
+        return em;
+    }
 
    /* @Bean
-    public BasicDataSource dataSource() throws URISyntaxException {
-        URI dbUri = new URI(System.getenv("DATABASE_URL"));
-
-        String username = dbUri.getUserInfo().split(":")[0];
-        String password = dbUri.getUserInfo().split(":")[1];
-        String dbUrl = "jdbc:postgresql://" + dbUri.getHost() + ':' + dbUri.getPort() + dbUri.getPath();
-
-        BasicDataSource basicDataSource = new BasicDataSource();
-        basicDataSource.setUrl(dbUrl);
-        basicDataSource.setUsername(username);
-        basicDataSource.setPassword(password);
-
-        return basicDataSource;
+    @ConfigurationProperties(prefix = "spring.datasource")
+    public DataSource dataSource() {
+        return DataSourceBuilder.create().build();
+    }*/
+    public DataSource dataSource(){
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName(driver);
+        dataSource.setUrl(url);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
+        return dataSource;
     }
-*/
- /*   private Properties additionalProperties() {
+
+    @Bean
+    public PlatformTransactionManager transactionManager(EntityManagerFactory emf){
+        JpaTransactionManager transactionManager = new JpaTransactionManager();
+        transactionManager.setEntityManagerFactory(emf);
+
+        return transactionManager;
+    }
+
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
+        return new PersistenceExceptionTranslationPostProcessor();
+    }
+
+    Properties additionalProperties() {
         Properties properties = new Properties();
-        properties.setProperty("hibernate.hbm2ddl.auto", "validate");
+        properties.setProperty("hibernate.hbm2ddl.auto", ddlauto);
+        properties.setProperty("hibernate.dialect", dialect);
+
+
         return properties;
     }
-*/
+
 
     /**
      * i18n
@@ -144,13 +148,18 @@ public class AppConfig extends WebMvcConfigurerAdapter {
         return new UserDetailsServiceImpl();
     }
 
+    @Bean
+    public BeePersonServiceImpl beePersonService() {
+        return new BeePersonServiceImpl();
+    }
+
 
 
     /**
      * http://spring-projects.ru/guides/uploading-files/#scratch
      * @return
      */
-  /*  @Bean
+   /* @Bean
     MultipartConfigElement multipartConfigElement() {
         MultipartConfigFactory factory = new MultipartConfigFactory();
         // factory.setMaxFileSize(20971520);   // 20MB

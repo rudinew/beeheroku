@@ -11,22 +11,22 @@
     <title th:text="#{title.site}"></title>
 
     <!-- Bootstrap Core CSS -->
-    <link th:href="@{/static/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
+    <link href="@{../../vendor/bootstrap/css/bootstrap.min.css}" th:href="@{/vendor/bootstrap/css/bootstrap.min.css}" rel="stylesheet" />
 
     <!-- MetisMenu CSS -->
-    <link th:href="@{/static/vendor/metisMenu/metisMenu.min.css}" rel="stylesheet"  />
+    <link href="@{../../vendor/metisMenu/metisMenu.min.css}" th:href="@{/vendor/metisMenu/metisMenu.min.css}" rel="stylesheet"  />
 
     <!-- DataTables CSS -->
-    <link th:href="@{/static/vendor/datatables-plugins/dataTables.bootstrap.css}" rel="stylesheet" />
+    <link href="@{../../vendor/datatables-plugins/dataTables.bootstrap.css}" th:href="@{/vendor/datatables-plugins/dataTables.bootstrap.css}" rel="stylesheet" />
 
     <!-- DataTables Responsive CSS -->
-    <link  th:href="@{/static/vendor/datatables-responsive/dataTables.responsive.css}" rel="stylesheet" />
+    <link href="@{../../vendor/datatables-responsive/dataTables.responsive.css}" th:href="@{/vendor/datatables-responsive/dataTables.responsive.css}" rel="stylesheet" />
 
     <!-- Custom CSS -->
-    <link th:href="@{/static/dist/css/sb-admin-2.css}" rel="stylesheet" />
+    <link href="@{../../dist/css/sb-admin-2.css}" th:href="@{/dist/css/sb-admin-2.css}" rel="stylesheet" />
 
     <!-- Custom Fonts -->
-    <link th:href="@{/static/vendor/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css" />
+    <link href="@{../../vendor/font-awesome/css/font-awesome.min.css}" th:href="@{/vendor/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css" />
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -39,22 +39,22 @@
 
     <!-- https://itchief.ru/lessons/bootstrap-3/113-bootstrap-3-datetimepicker -->
     <!-- jQuery -->
-    <script type="text/javascript" src="/static/vendor/jquery/jquery-1.11.1.min.js" th:src="@{/static/vendor/jquery/jquery-1.11.1.min.js}" ></script> <!--  jquery.min.js -->
+    <script type="text/javascript" src="../../vendor/jquery/jquery-1.11.1.min.js" th:src="@{/vendor/jquery/jquery-1.11.1.min.js}" ></script> <!--  jquery.min.js -->
 
     <!-- <script type="text/javascript" th:src="@{/static/vendor/bootstrap/js/moment.js}"></script> -->
-    <script type="text/javascript" src="/static/vendor/bootstrap/js/moment-with-locales.min.js" th:src="@{/static/vendor/bootstrap/js/moment-with-locales.min.js}"></script>
+    <script type="text/javascript" src="../../vendor/bootstrap/js/moment-with-locales.min.js" th:src="@{/vendor/bootstrap/js/moment-with-locales.min.js}"></script>
     <!-- Bootstrap Core JavaScript -->
-    <script type="text/javascript" src="/static/vendor/bootstrap/js/bootstrap.min.js" th:src="@{/static/vendor/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" src="../../vendor/bootstrap/js/bootstrap.min.js" th:src="@{/vendor/bootstrap/js/bootstrap.min.js}"></script>
 
-    <script type="text/javascript" src="/static/vendor/bootstrap/js/bootstrap-datetimepicker.min.js" th:src="@{/static/vendor/bootstrap/js/bootstrap-datetimepicker.min.js}"></script>
+    <script type="text/javascript" src="../../vendor/bootstrap/js/bootstrap-datetimepicker.min.js" th:src="@{/vendor/bootstrap/js/bootstrap-datetimepicker.min.js}"></script>
 
-    <link rel="stylesheet" href="/static/vendor/bootstrap/css/bootstrap-datetimepicker.min.css" th:href="@{/static/vendor/bootstrap/css/bootstrap-datetimepicker.min.css}" />
+    <link rel="stylesheet" href="../../vendor/bootstrap/css/bootstrap-datetimepicker.min.css" th:href="@{/vendor/bootstrap/css/bootstrap-datetimepicker.min.css}" />
 
     <!-- Metis Menu Plugin JavaScript -->
-    <script type="text/javascript" src="/static/vendor/metisMenu/metisMenu.min.js" th:src="@{/static/vendor/metisMenu/metisMenu.min.js}"></script>
+    <script type="text/javascript" src="../../vendor/metisMenu/metisMenu.min.js" th:src="@{/vendor/metisMenu/metisMenu.min.js}"></script>
 
     <!-- Custom Theme JavaScript -->
-    <script type="text/javascript" src="/static/dist/js/sb-admin-2.js" th:src="@{/static/dist/js/sb-admin-2.js}"></script>
+    <script type="text/javascript" src="../../dist/js/sb-admin-2.js" th:src="@{/dist/js/sb-admin-2.js}"></script>
 
 
 </head>
@@ -131,14 +131,14 @@
 
                                     <table class="well2" >
                                         <tr th:if="${beePerson.getNrOfBeePersonFiles() == 0}"  >
-                                            <td > <!-- width="60" height="200" -->
-                                                <img width="160" th:src="@{/static/images/ava.jpg}" src="/static/images/ava.jpg"/>
+                                            <td >
+                                                <img width="160" th:src="@{/images/ava.jpg}" src="../../images/ava.jpg"/>
 
                                             </td>
                                         </tr>
 
                                         <tr th:if="${beePerson.getNrOfBeePersonFiles()} > 0" th:each="photo : ${beePerson.getBeePersonFiles()}"  >
-                                            <td> <!-- width="60" height="200" -->
+                                            <td>
                                                 <img width="160" th:src="${photo.getId()}"/>
 
                                             </td>
@@ -302,7 +302,7 @@
 
                                         <!-- <button type="reset" class="btn btn-default">Відміна</button> -->
 
-                                        <button type="back" class="btn btn-default" onclick="history.go(-1);return true;"><span th:text="#{page.button.back}"></span>    </button>
+                                       <!-- <button type="back" class="btn btn-default" onclick="history.go(-1);return true;"><span th:text="#{page.button.back}"></span>    </button> -->
 
                                         <a th:href="@{/}">
                                             <button type="button" class="btn btn-default"><span th:text="#{page.button.tohome}"></span> </button>

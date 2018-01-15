@@ -132,7 +132,7 @@
             </li>
             <!-- /.dropdown -->
             <li>
-                <a class="text-primary" th:href="@{/}"  th:inline="text">User</a>
+                <a class="text-primary" th:href="@{/}"  th:inline="text">[[${#httpServletRequest.remoteUser}]]</a>
             </li>
         </ul>
         <!-- /.navbar-top-links -->

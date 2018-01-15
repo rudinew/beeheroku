@@ -3,6 +3,8 @@ package com.bee.backend.domain.security;
 import com.bee.backend.domain.BaseEntity;
 import com.bee.web.validators.ValidEmail;
 
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.Type;
 import org.joda.time.LocalDate;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -61,7 +63,7 @@ public class BeeUsers extends BaseEntity {
     private LocalDate dtFrom;
 
     //Relation
- /*   @OneToMany(mappedBy="beeParentUsers", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="beeParentUsers", fetch = FetchType.LAZY)
     public List<BeeUsersRelation> beeUsersRelationsfromParent = new ArrayList<BeeUsersRelation>();
 
     public  List<BeeUsersRelation> getBeeUsersRelationsfromParent() {
@@ -69,7 +71,7 @@ public class BeeUsers extends BaseEntity {
             this.beeUsersRelationsfromParent = new ArrayList<BeeUsersRelation>();
         }
         return this.beeUsersRelationsfromParent;
-    }*/
+    }
 
     ///
     //BEEDOCNOTIFICATION
@@ -91,7 +93,7 @@ public class BeeUsers extends BaseEntity {
     public int getNrOfBeeDocNotifications() {
         return getBeeDocNotifications().size();
     }
-    */
+*/
     ///
 
     public BeeUsers() {

@@ -26,46 +26,105 @@
 
 
 
-        <!-- Page Content -->
-        <div id="page-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <h3 class="page-header text-primary"><span text="#{index.menu.home}"></span></h3>
-						
-						<div class="panel panel-default">
-							<div class="panel-heading">
-								Оберіть дію
-							</div>
-							<!-- /.panel-heading -->
-							<div class="panel-body">						
-					           <div>
-									<a href="#"   class="btn btn-outline btn-primary btn-lg" aria-label="Right Align">
-										<span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>  <span th:text="#{page.button.newcard}"></span>
-									</a>
-							   </div>
-						
-							</div>
-							<!-- /.panel-body -->
-						</div>
-						<!-- /.panel -->
-						
-						
-						
+    <!-- Page Content -->
+    <div id="page-wrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header text-primary"><span th:text="#{index.menu.home}"></span></h3>
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Оберіть дію
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div>
+                                <a th:href="@{/card/new}"   class="btn btn-outline btn-primary btn-lg" aria-label="Right Align">
+                                    <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>  <span th:text="#{page.button.newcard}"></span>
+                                </a>
+                            </div>
+
+                        </div>
+                        <!-- /.panel-body -->
                     </div>
-                    <!-- /.col-lg-12 -->
+                    <!-- /.panel -->
+
+
+
+                </div>
+                <!-- /.col-lg-12 -->
+
+              <!--  <div th:if="${countEmptyDoc} &gt; 0"  class="col-lg-6"> -->
+                <div  class="col-lg-6">
+                    <div class="panel panel-default">
+                      <!--  <div class="panel-heading">
+                            <span th:text ="'Зверніть увагу! У вас '+${countEmptyDoc} + ' незаповнених документів!' "></span>
+                        </div>
+                        -->
+                        <!-- /.panel-heading -->
+
+                        <div class="panel-body">
+                            <!-- <div class="alert alert-success">
+                                  Коваленко А.Н. потрібно вклеїти фото <a href="#" class="alert-link">Alert Link</a>.
+                              </div>
+                              <div class="alert alert-info">
+                                  Туманов А.Р. не внесено паспорт <a href="#" class="alert-link">Alert Link</a>.
+                              </div>-->
+                            <!--  <div class="alert alert-warning">
+                                  Коваленко А.Н. потрібно вклеїти фото <a href="#" class="alert-link">Alert Link</a>.
+                              </div>
+                              <div class="alert alert-danger">
+                                  Туманов А.Р. не внесено паспорт <a href="#" class="alert-link">Alert Link</a>.
+                              </div> -->
+
+
+                            <table>
+                                <tr th:each="doc : ${beeCitizenship}"> <!-- emptyDoc -->
+                                    <!-- <td class="alert alert-danger">
+                                        <a th:href="${'/personInfo/' + doc.beePerson.id + '/doc/new/'+ doc.beeDocType.id}" >
+                                            <span th:text ="${doc.beePerson.lastname} + ' ' + ${doc.beePerson.firstname}+ ' ' + ${doc.beePerson.middlename} +': '+ ${doc.beeDocType.name}"> </span>
+                                        </a>
+                                    </td>
+                                    -->
+
+                                    <td class="alert alert-danger">
+                                        <span th:text ="${doc.id} + ' ' + ${doc.name}"> </span>
+
+                                    </td>
+
+
+                                </tr>
+                            </table>
+                            <!--http://www.thymeleaf.org/doc/tutorials/2.1/usingthymeleaf.html#introducing-thymeleaf
+                             Note that textual aliases exist for some of these operators:
+                             gt (>), lt (<), ge (>=), le (<=), not (!). Also eq (==), neq/ne (!=).
+                             -->
+                          <!--  <div><small>
+                                <em>
+                                    <span th:if="${countEmptyDoc} &gt; 5 "  th:text ="'*Примітка: відображено перші 5 незаповнених документів'"></span>
+                                </em>
+                            </small>
+                            </div>
+                            -->
 
 
 
 
 
 
-</div>
-
+                        </div>
+                        <!-- .panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-6 -->
             </div>
-            <!-- /.container-fluid -->
+            <!-- /.row -->
         </div>
-        <!-- /#page-wrapper -->
+        <!-- /.container-fluid -->
+    </div>
+    <!-- /#page-wrapper -->
 
     </div>
     <!-- /#wrapper -->
