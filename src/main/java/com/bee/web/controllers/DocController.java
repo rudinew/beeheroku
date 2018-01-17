@@ -2,10 +2,7 @@ package com.bee.web.controllers;
 
 import com.bee.backend.domain.data.*;
 import com.bee.backend.domain.security.BeeUsers;
-import com.bee.backend.service.data.BeeActionsService;
-import com.bee.backend.service.data.BeeDocumentService;
-import com.bee.backend.service.data.BeePersonService;
-import com.bee.backend.service.data.BeeTypeService;
+import com.bee.backend.service.data.*;
 import com.bee.backend.service.security.UserService;
 import com.bee.web.exceptions.ScansNotFoundException;
 import com.bee.web.utils.UserIPUtils;
@@ -65,8 +62,8 @@ public class DocController {
     @Autowired
     private BeeActionsService beeActionsService;
 
-   /* @Autowired
-    private EmailService emailService;*/
+    @Autowired
+    private EmailService emailService;
 
     /* 14.06.2017 from petclinic*/
     //довідник Типи документів
@@ -438,7 +435,7 @@ public class DocController {
             attachFileNames.append(attach.getFilename() + "; ");
         }
 
-     /*   emailService.sendMessageWithAttachment(emailTo, emailSubject, emailMessage, attaches);*/
+        emailService.sendMessageWithAttachment(emailTo, emailSubject, emailMessage, attaches);
 
         //Журнал дій
         BeeUsers beeUsers = userService.getUserByLogin(user.getUsername());

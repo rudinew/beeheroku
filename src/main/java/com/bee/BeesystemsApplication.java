@@ -16,5 +16,5 @@ public class BeesystemsApplication /*for Tomcat*/  extends SpringBootServletInit
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
 		return builder.sources(BeesystemsApplication.class);
 	}
-	
+
 }
