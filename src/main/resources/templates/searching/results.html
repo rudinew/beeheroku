@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title th:text="#{title.site}"></title>
+
+    <div th:replace="fragments/headerMain :: header-css"/>
+
+</head>
+
+<body>
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<!-- static/vendor/datatables/js/jquery.dataTables.min.js сообщения типа перевела на украинский
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+</script> -->
+
+    <div id="wrapper">
+
+        <!-- Header -->
+        <!-- <div th:replace="fragments/headerMain :: headerMain"> </div> -->
+        <!-- <div th:include="fragments/headerMain" th:remove="tag" /> -->
+        <div th:replace="fragments/headerMain :: header"/>
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="page-header text-primary"><span th:text="#{page.header.searchResult}"></span><span th:text = "' - '+ ${pattern}"> </span></h3>
+
+						
+						<div class="panel panel-default">
+                       <!-- <div class="panel-heading">
+                             DataTables Advanced Tables 
+                        </div>-->
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <thead>
+                                    <tr>
+                                        <th width="20%"><span th:text="#{page.column.doctype}"></span></th>
+                                        <th width="28%"><span th:text="#{page.column.fullname}"></span></th>
+                                        <th width="13%"><span th:text="#{page.column.phone}"></span></th>
+                                        <th width="12%"><span th:text="#{page.column.action}"></span></th>
+                                        <th width="12%"><span th:text="#{page.column.whoSee}"></span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <tr class="odd gradeX" th:each="person : ${personlist}">
+                                    <td><span th:text = "#{header.menu.card}" > </span></td>
+                                    <td><span th:text = "${person.lastname} + ' ' + ${person.firstname}+ ' ' + ${person.middlename}">  </span>  </td>
+                                    <td><span th:text = "${person.phone}"> </span></td>
+                                    <td>
+                                        <div >
+                                            <a th:href="${'/card/'+ person.id}"
+                                               class="btn btn-outline btn-primary btn-xs"
+                                               aria-label="Right Align" title="Редагувати"> <!-- btn btn-outline btn-danger btn-xs -->
+                                                <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span>
+                                            </a>
+
+                                            <a href="#" th:attr="data-href=${'/card/'+ person.id + '/delete'}"
+                                               class="btn btn-outline btn-danger btn-xs"
+                                               data-toggle="modal" data-target="#confirm-delete"  id = "modalOpen"  aria-label="Right Align" title="Видалити"> <!-- btn btn-outline btn-danger btn-xs -->
+                                                <span class="glyphicon glyphicon-floppy-remove" aria-hidden="true" ></span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                         <span th:remove="tag"
+                                               th:each= "beeAccessPerson : ${person.getBeeAccessPersons()}"
+                                               th:text="${beeAccessPerson.getBeeUsers().getLogin()}" >[beeAccessPerson UsersLogin] <br /> </span>
+
+                                        <span th:remove="tag" th:if="${person.getNrOfBeeAccessPersons() == 0}"> - </span>
+
+                                        <a th:href="${'/card/'+ person.id} + '/access'"
+                                           class="btn btn-outline btn-primary btn-xs"
+                                           aria-label="Right Align" title="Редагувати доступ">
+                                            <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span>
+                                        </a>
+
+                                    </td>
+                                </tr>
+                                <tr class="odd gradeX" th:each="doc : ${doclist}">
+                                    <td > <span th:text = "${doc.beeDocType.name}">  </span> </td>
+                                    <td > <span th:text ="${doc.series} + ' ' + ${doc.num} + ' (' + ${doc.beePerson.lastname}  + ' ' + ${doc.beePerson.firstname}+ ' ' + ${doc.beePerson.middlename}  +')'"> </span> </td>
+                                    <td><span th:text = "${doc.beePerson.phone}"> </span></td>
+                                    <td>
+                                        <div >
+                                            <a th:href="${'/personInfo/' + doc.beePerson.id + '/doc/' + doc.id + '/edit'}"
+                                               class="btn btn-outline btn-primary btn-xs"
+                                               aria-label="Right Align" title="Редагувати"> <!-- btn btn-outline btn-danger btn-xs -->
+                                                <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span>
+                                            </a>
+
+                                            <a href="#" th:attr="data-href=${'/personInfo/' + doc.beePerson.id + '/doc/' + doc.id + '/delete'}"
+                                               class="btn btn-outline btn-danger btn-xs"
+                                               data-toggle="modal" data-target="#confirm-delete"  id = "modalOpen"  aria-label="Right Align" title="Видалити"> <!-- btn btn-outline btn-danger btn-xs -->
+                                                <span class="glyphicon glyphicon-floppy-remove" aria-hidden="true" ></span>
+                                            </a>
+
+
+                                            <a th:href="${'/personInfo/' + doc.beePerson.id + '/doc/' + doc.id + '/sendEmail'}"
+                                               class="btn btn-outline btn-primary btn-xs"
+                                               aria-label="Right Align" title="Відправити на пошту"> <!-- btn btn-outline btn-danger btn-xs -->
+                                                <span class="glyphicon glyphicon-envelope" aria-hidden="true" ></span>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                         <span th:remove="tag"
+                                               th:each= "beeAccessPerson : ${doc.beePerson.getBeeAccessPersons()}"
+                                               th:text="${beeAccessPerson.getBeeUsers().getLogin()}" >[beeAccessPerson UsersLogin] <br /> </span>
+
+                                        <span th:remove="tag" th:if="${doc.beePerson.getNrOfBeeAccessPersons() == 0}"> - </span>
+
+                                        <a th:href="${'/card/'+ doc.beePerson.id} + '/access'"
+                                           class="btn btn-outline btn-primary btn-xs"
+                                           aria-label="Right Align" title="Редагувати доступ">
+                                            <span class="glyphicon glyphicon-edit" aria-hidden="true" ></span>
+                                        </a>
+
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                                </table>
+                                <!-- /.table-responsive -->
+                           
+                        </div>
+                        <!-- /.panel-body -->
+						
+                    </div>
+		          <!-- /.panel -->
+				  </div>
+                <!-- /.row -->
+				 </div>
+                    <!-- /.col-lg-12 -->
+                
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+<!-- https://itchief.ru/lessons/bootstrap-3/bootstrap-3-modal-window -->
+<!-- HTML-код модального окна -->
+<div id="confirm-delete" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Заголовок модального окна -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h4 class="modal-title">
+                    <button type="button" class="btn btn-warning btn-circle"><i class="fa fa-times"></i>
+                    </button>
+                    <span th:text="#{question.name.warn}"></span>
+                </h4>
+            </div>
+            <!-- Основное содержимое модального окна -->
+            <div class="modal-body">
+                <span th:text="#{question.delete.client}"></span>
+            </div>
+            <!-- Футер модального окна -->
+            <div class="modal-footer">
+
+                <a type="button" class="btn btn-primary btn-ok"><span th:text="#{page.button.yes}"></span></a>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span th:text="#{page.button.no}"></span></button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Скрипт, вызывающий модальное окно после загрузки страницы -->
+<!-- <script type="text/javascript">
+    $(document).ready(function() {
+        $("#myModalBox").modal('show');
+    });
+</script> -->
+
+
+<script type="text/javascript">
+    $(document).ready(function(){
+
+        //при нажатию на любую кнопку, имеющую класс .btn
+        $("#modalOpen").click(function() {
+            //открыть модальное окно с id="myModal"
+            $("#myModalBox").modal('show');
+            e.preventDefault();
+        });
+
+        //подтверждение удаления
+        $("#confirm-delete").on('show.bs.modal', function(e) {
+            $(this).find('.btn-ok').attr('href', $(e.relatedTarget).data('href'));
+        });
+
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+
+
+</script>
+
+<div th:replace="fragments/footer :: footer"/>
+
+
+</body>
+
+</html>
