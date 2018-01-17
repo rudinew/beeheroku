@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title th:text="#{title.site}"></title>
+
+    <div th:replace="fragments/headerMain :: header-css"/>
+
+</head>
+
+<body>
+
+<!-- Page-Level Demo Scripts - Tables - Use for reference -->
+<!-- static/vendor/datatables/js/jquery.dataTables.min.js сообщения типа перевела на украинский
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+</script> -->
+
+    <div id="wrapper">
+
+        <!-- Header -->
+        <!-- <div th:replace="fragments/headerMain :: headerMain"> </div> -->
+        <!-- <div th:include="fragments/headerMain" th:remove="tag" /> -->
+        <div th:replace="fragments/headerMain :: header"/>
+
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <h3 class="page-header text-primary"><span th:text="#{index.menu.settingsEmails}"></span></h3>
+
+
+                        <!--	<div>
+                              <p>
+                                <a th:href="@{/card/new}"   class="btn btn-outline btn-primary" aria-label="Right Align">
+                                   <span class="glyphicon glyphicon-save-file" aria-hidden="true"></span>Новий
+                                </a>
+
+                            </p>
+                               <br/>
+
+                        </div> -->
+            
+						
+						<div class="panel panel-default">
+                       <!-- <div class="panel-heading">
+                             DataTables Advanced Tables 
+                        </div>-->
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+<div>Можна виводити параметри налаштування пошти...</div>
+                           
+                        </div>
+                        <!-- /.panel-body -->
+						
+                    </div>
+		          <!-- /.panel -->
+				  </div>
+                <!-- /.row -->
+				 </div>
+                    <!-- /.col-lg-12 -->
+                
+            </div>
+            <!-- /.container-fluid -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->
+
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+
+</html>

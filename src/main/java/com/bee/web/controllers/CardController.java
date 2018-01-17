@@ -1,15 +1,11 @@
 package com.bee.web.controllers;
 
-import com.bee.backend.domain.data.BeeCitizenship;
-import com.bee.backend.domain.data.BeePerson;
-
+import com.bee.backend.domain.data.*;
 import com.bee.backend.domain.security.BeeAccessPerson;
 import com.bee.backend.domain.security.BeeUsers;
 import com.bee.backend.domain.security.BeeUsersRelation;
 import com.bee.backend.domain.security.UserPrivileges;
-import com.bee.backend.service.data.BeePersonService;
-import com.bee.backend.service.data.BeeTypeService;
-
+import com.bee.backend.service.data.*;
 import com.bee.backend.service.security.BeeAccessPersonService;
 import com.bee.backend.service.security.UserService;
 import com.bee.backend.service.security.UsersRelationService;
@@ -62,20 +58,19 @@ public class CardController {
     private BeeTypeService beeTypeService;
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private UsersRelationService usersRelationService;
-
     @Autowired
     private BeeAccessPersonService beeAccessPersonService;
-
+    @Autowired
+    private UsersRelationService usersRelationService;
+    @Autowired
+    private BeeActionsService beeActionsService;
     /* 14.06.2017 from petclinic*/
     //довідник Громадянство
     @ModelAttribute("citizen")
     public Collection<BeeCitizenship> populateBeeCitizenship() {
         return this.beeTypeService.getBeeCitizenshipAll();
     }
-     //группа контактів користувача
+    //группа контактів користувача
     @ModelAttribute("groupUsers")
     public Collection<BeeUsers> populateBeeUsers() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -106,7 +101,7 @@ public class CardController {
         BeeUsers beeUsers = userService.getUserByLogin(user.getUsername());
         List<BeeAccessPerson> beeAccessPerson = beeAccessPersonService.getBeeAccessPersonByBeeUsers(beeUsers);
         model.addAttribute("personlist", beePersonService.getBeePersonByBeeAccessPersonsOrderByLastnameAsc(beeAccessPerson));
-      //  model.addAttribute("personlist", beePersonService.getBeePersonAll());
+
         LOG.info("{} got cards page (userIP = {}, SessionId = {})",
                 user.getUsername(),
                 UserIPUtils.getClientIp(request),
@@ -133,8 +128,8 @@ public class CardController {
 
     @RequestMapping(value = "/card/new", method = RequestMethod.POST)
     public String processCreationForm(@ModelAttribute("beePerson") @Valid BeePerson beePerson,
-                                       BindingResult result,
-                                       SessionStatus status,
+                                      BindingResult result,
+                                      SessionStatus status,
                                       @RequestParam("photo") MultipartFile photo,
                                       HttpServletRequest request) {
 
@@ -147,23 +142,22 @@ public class CardController {
                     result.toString(),
                     UserIPUtils.getClientIp(request),
                     WebUtils.getSessionId(request)
-                   );
+            );
             return CREATE_OR_UPDATE_CARD_URL_MAPPING;
         }
 
         try {
 
             this.beePersonService.addBeePerson(beePerson,photo,user,"insert");
-           // this.beePersonService.saveAndFlushBeePerson(beePerson);
-             //
+            //
             status.setComplete();
             //Журнал дій
             String mes = String.format("вставка нового клієнта %s  (userIP = %s , SessionId = %s )",
                     beePerson.getName(),
                     UserIPUtils.getClientIp(request),
                     WebUtils.getSessionId(request));
-         /*   BeeActions beeActions = new BeeActions(beeUsers, mes, CARD_ACTION_NAME);
-            this.beeActionsService.saveAction(beeActions);*/
+            BeeActions beeActions = new BeeActions(beeUsers, mes, CARD_ACTION_NAME);
+            this.beeActionsService.saveAction(beeActions);
 
             LOG.info("{} inserted new client {} (userIP = {}, SessionId = {})",
                     user.getUsername(),
@@ -187,15 +181,15 @@ public class CardController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BeeUsers beeUsers = userService.getUserByLogin(user.getUsername());
         List<BeeAccessPerson> beeAccessPerson = beeAccessPersonService.getBeeAccessPersonByBeeUsers(beeUsers);
-        BeePerson beePerson =  beePersonService.getBeePersonByOneAndBeeAccessPersonsIn(personId, beeAccessPerson);
+        BeePerson beePerson = beePersonService.getBeePersonByOneAndBeeAccessPersonsIn(personId, beeAccessPerson);
         //https://spring.io/blog/2013/11/01/exception-handling-in-spring-mvc
         if (beePerson == null) throw new PersonAccessForbiddenException();
-       // List<BeePersonFile> beePersonFile = this.beePersonService.getBeePersonFileByBeePerson(beePerson);
+        List<BeePersonFile> beePersonFile = this.beePersonService.getBeePersonFileByBeePerson(beePerson);
 
         model.addAttribute("login", user.getUsername());
         model.addAttribute("roles", user.getAuthorities());
         model.addAttribute("beePerson", beePerson);
-      //  model.addAttribute("photo", beePersonFile);
+        model.addAttribute("photo", beePersonFile);
         LOG.info("{} got card/edit page (userIP = {}, SessionId = {})",
                 user.getUsername(),
                 UserIPUtils.getClientIp(request),
@@ -235,8 +229,8 @@ public class CardController {
                     beePerson.getName(),
                     UserIPUtils.getClientIp(request),
                     WebUtils.getSessionId(request));
-           // BeeActions beeActions = new BeeActions(beeUsers, mes, CARD_ACTION_NAME);
-         //   this.beeActionsService.saveAction(beeActions);
+            BeeActions beeActions = new BeeActions(beeUsers, mes, CARD_ACTION_NAME);
+            this.beeActionsService.saveAction(beeActions);
 
 
             LOG.info("{} updated client {} (userIP = {}, SessionId = {})",
@@ -279,8 +273,8 @@ public class CardController {
                 beePerson.getName(),
                 UserIPUtils.getClientIp(request),
                 WebUtils.getSessionId(request));
-       // BeeActions beeActions = new BeeActions(beeUsers, mes, CARD_ACTION_NAME);
-       // this.beeActionsService.saveAction(beeActions);
+        BeeActions beeActions = new BeeActions(beeUsers, mes, CARD_ACTION_NAME);
+        this.beeActionsService.saveAction(beeActions);
 
         LOG.info("{} deleted client - {} (userIP = {}, SessionId = {})",
                 user.getUsername(),
@@ -317,36 +311,36 @@ public class CardController {
     }
 
     ///доступ к карточке
-   /* @RequestMapping(value = "/card/{personId}/access", method = RequestMethod.POST)
+    @RequestMapping(value = "/card/{personId}/access", method = RequestMethod.POST)
     public String saveAccessForm(@PathVariable("personId") long personId,
                                  @ModelAttribute("beeAccessPerson") @Valid BeeAccessPerson beeAccessPerson,
                                  BindingResult result,
                                  SessionStatus status,
                                  HttpServletRequest request)
-     {
-         if (result.hasErrors()) {
-             return CREATE_OR_UPDATE_CARD_ACCESS_URL_MAPPING;
-         }
-         BeePerson beePerson = beePersonService.getBeePersonByOne(personId);
-         beeAccessPerson.setBeePerson(beePerson);
-         beeAccessPerson.setPrivileges(UserPrivileges.EDIT);
-         beeAccessPersonService.saveAndFlushBeeAccessPerson(beeAccessPerson);
-         status.setComplete();
+    {
+        if (result.hasErrors()) {
+            return CREATE_OR_UPDATE_CARD_ACCESS_URL_MAPPING;
+        }
+        BeePerson beePerson = beePersonService.getBeePersonByOne(personId);
+        beeAccessPerson.setBeePerson(beePerson);
+        beeAccessPerson.setPrivileges(UserPrivileges.EDIT);
+        beeAccessPersonService.saveAndFlushBeeAccessPerson(beeAccessPerson);
+        status.setComplete();
 
-         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-         BeeUsers beeUsers = userService.getUserByLogin(user.getUsername());
-         //Журнал дій
-         String mes = String.format("надано доступ до клієнта %s користувачу  %s (userIP = %s , SessionId = %s )",
-                 beePerson.getName(),
-                 beeAccessPerson.getBeeUsers().getLogin(),
-                 UserIPUtils.getClientIp(request),
-                 WebUtils.getSessionId(request));
-        // BeeActions beeActions = new BeeActions(beeUsers, mes, CARD_ACCESS_ACTION_NAME);
-       //  this.beeActionsService.saveAction(beeActions);
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        BeeUsers beeUsers = userService.getUserByLogin(user.getUsername());
+        //Журнал дій
+        String mes = String.format("надано доступ до клієнта %s користувачу  %s (userIP = %s , SessionId = %s )",
+                beePerson.getName(),
+                beeAccessPerson.getBeeUsers().getLogin(),
+                UserIPUtils.getClientIp(request),
+                WebUtils.getSessionId(request));
+        BeeActions beeActions = new BeeActions(beeUsers, mes, CARD_ACCESS_ACTION_NAME);
+        this.beeActionsService.saveAction(beeActions);
 
-         return "redirect:/card/{personId}/access";
+        return "redirect:/card/{personId}/access";
 
-   }*/
+    }
 
 
     /**
@@ -370,14 +364,13 @@ public class CardController {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         BeeUsers beeUsers = userService.getUserByLogin(user.getUsername());
         //Журнал дій
-      /*  String mes = String.format("Закрито доступ до клієнта %s користувачу  %s (userIP = %s , SessionId = %s )",
+        String mes = String.format("Закрито доступ до клієнта %s користувачу  %s (userIP = %s , SessionId = %s )",
                 beePersonName,
                 beeUserName,
                 UserIPUtils.getClientIp(request),
                 WebUtils.getSessionId(request));
         BeeActions beeActions = new BeeActions(beeUsers, mes, CARD_ACCESS_ACTION_NAME);
         this.beeActionsService.saveAction(beeActions);
-        */
 
         LOG.info("{} has blocked {} access to {}'s card (userIP = {}, SessionId = {})",
                 user.getUsername(),
@@ -398,7 +391,7 @@ public class CardController {
      * @throws IOException
      */
     // http://www.baeldung.com/spring-requestmapping
-/*
+
     @RequestMapping(value =  {"/card/{personId}/{photoId}", "/card/{personId}/photo/{photoId}"}, method = RequestMethod.GET)
     public ResponseEntity<byte[]> viewUploadedFiles(@PathVariable("photoId") Long photoId) throws IOException {
 
@@ -407,17 +400,26 @@ public class CardController {
     private ResponseEntity<byte[]> photoById(long id) {
         BeePersonFile beePersonFile = this.beePersonService.getBeePersonFileByOne(id);
         byte[] bytes = beePersonFile.getFile();
-
+       /* if (bytes == null)
+            throw new PhotoNotFoundException();*/
         if (bytes == null)
             return null;
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.valueOf(beePersonFile.getType()));
         headers.add("content-disposition", "inline;filename=" + beePersonFile.getName());
-
+        // headers.setContentType(MediaType.parseMediaType(beeTaxPhoto.getPhotoType()));
+        //headers.add("content-disposition", "inline;filename=" + beeTaxPhoto.getPhotoName());
+        //headers.setContentType(MediaType.parseMediaType(beeTaxPhoto.getPhotoType()));
+        //headers.setContentType(MediaType.APPLICATION_ATOM_XML);
+        //headers.setContentType(MediaType.IMAGE_PNG);
+        //ALL - nothing
+        //MULTIPART_FORM_DATA - view jpg
+        //MediaType.valueOf(MediaType.ALL_VALUE) nothing
+        //APPLICATION_OCTET_STREAM - view jpg
 
         return new ResponseEntity<byte[]>(bytes, headers, HttpStatus.OK);
     }
-*/
+
 
 }

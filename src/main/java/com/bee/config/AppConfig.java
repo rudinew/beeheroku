@@ -1,6 +1,7 @@
 package com.bee.config;
 
 
+import com.bee.backend.service.data.BeeDocumentServiceImpl;
 import com.bee.backend.service.data.BeePersonServiceImpl;
 import com.bee.backend.service.security.UserDetailsServiceImpl;
 
@@ -146,6 +147,11 @@ public class AppConfig extends WebMvcConfigurerAdapter {
     @Bean
     public UserDetailsServiceImpl userDetailsService() {
         return new UserDetailsServiceImpl();
+    }
+
+    @Bean
+    public BeeDocumentServiceImpl beeDocumentService() {
+        return new BeeDocumentServiceImpl();
     }
 
     @Bean

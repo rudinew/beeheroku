@@ -223,7 +223,8 @@ CREATE TABLE BEE_DOC_NOTIFICATION (
                      REFERENCES bee_document_type (ID)
                      ON DELETE CASCADE
                                 );
-/////////////////
-12.01.2018 test
-alter table bee_document_file drop column file;
-alter table bee_person_file drop column file;
+////
+
+insert into bee_doc_notification(type_id, is_required, user_id )
+    select bee_document_type.id, bee_document_type.is_required, bee_users.id
+from bee_document_type, bee_users

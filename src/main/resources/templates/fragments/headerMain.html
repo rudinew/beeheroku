@@ -30,6 +30,9 @@
         <!-- Custom Fonts -->
         <link href="../../vendor/font-awesome/css/font-awesome.min.css" th:href="@{/vendor/font-awesome/css/font-awesome.min.css}" rel="stylesheet" type="text/css" />
 
+        <!-- jQuery -->
+        <script  type="text/javascript" src="../../vendor/jquery/jquery.min.js" th:src="@{/vendor/jquery/jquery.min.js}" ></script>
+
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>
@@ -120,12 +123,12 @@
                     <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i><span th:text="#{index.menu.profile}"></span></a>
+                    <li><a th:href="@{'/profile'}"><i class="fa fa-user fa-fw"></i><span th:text="#{index.menu.profile}"></span></a>
                     </li>
                     <!-- <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
                     </li> -->
                     <li class="divider"></li>
-                    <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> <span th:text="#{index.menu.logout}"></span></a>
+                    <li><a th:href="@{'/login'}"><i class="fa fa-sign-out fa-fw"></i> <span th:text="#{index.menu.logout}"></span></a>
                     </li>
                 </ul>
                 <!-- /.dropdown-user -->
@@ -167,17 +170,17 @@
                         <a href="#"><i class="fa fa-flask fa-fw"></i> <span th:text="#{index.menu.settings}"></span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li>
-                                <a href="#"><span th:text="#{index.menu.settingsNotifications}"></span></a>
+                                <a th:href="${'/notifications/'+ beeUsers.id}"><span th:text="#{index.menu.settingsNotifications}"></span></a>
                             </li>
 
                             <li>
-                                <a href="#"><span th:text="#{index.menu.settingsUsers}"></span></a>
+                                <a th:href="@{/users}"><span th:text="#{index.menu.settingsUsers}"></span></a>
                             </li>
-                          <!--  <li>
-                                <a th:href="@{/emails}"><span th:text="#{index.menu.settingsEmails}"></span></a>
-                            </li> -->
+                            <!--  <li>
+                                  <a th:href="@{/emails}"><span th:text="#{index.menu.settingsEmails}"></span></a>
+                              </li> -->
                             <li>
-                                <a href="#"><span th:text="#{index.menu.settingsActions}"></span></a>
+                                <a th:href="@{/actions}"><span th:text="#{index.menu.settingsActions}"></span></a>
                             </li>
 
                         </ul>

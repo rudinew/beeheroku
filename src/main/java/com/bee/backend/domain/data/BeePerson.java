@@ -74,30 +74,42 @@ public class BeePerson extends BaseEntity {
     private LocalDate dtFrom;
 
     //PHOTO
-    @OneToMany(mappedBy="beePerson", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="beePerson", fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
     @Fetch(value = FetchMode.SUBSELECT)
-    //when private then in indexOLD.html - Property or field 'beeTaxes' cannot be found on object of type 'com.bee.domain.BeePerson' - maybe not public?
     public List<BeePersonFile> beePersonFiles = new ArrayList<BeePersonFile>();
-    //from petclinic
-    //protected
     public  List<BeePersonFile> getBeePersonFiles() {
         if (this.beePersonFiles == null) {
             this.beePersonFiles = new ArrayList<BeePersonFile>();
         }
         return this.beePersonFiles;
     }
-
-    public void setBeePersonFile(BeePersonFile beePersonFile) {
-        getBeePersonFiles().add(beePersonFile);
-        beePersonFile.setBeePerson(this);
-    }
-
     public int getNrOfBeePersonFiles() {
         return getBeePersonFiles().size();
     }
 
+    //DOCUMENT
+    @OneToMany(mappedBy="beePerson", fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
+    @Fetch(value = FetchMode.SUBSELECT)
+    public List<BeeDocument> beeDocuments = new ArrayList<BeeDocument>();
+    public  List<BeeDocument> getBeeDocuments() {
+        if (this.beeDocuments == null) {
+            this.beeDocuments = new ArrayList<BeeDocument>();
+        }
+        return this.beeDocuments;
+    }
+
+    public void setBeeDocument(BeeDocument beeDocument) {
+        getBeeDocuments().add(beeDocument);
+        beeDocument.setBeePerson(this);
+    }
+
+    public int getNrOfBeeDocuments() {
+        return getBeeDocuments().size();
+    }
+
+
     //BEEACCESSPERSON
-    @OneToMany(mappedBy="beePerson", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="beePerson", fetch = FetchType.EAGER, cascade=CascadeType.REMOVE)
     //https://stackoverflow.com/questions/13539050/entitynotfoundexception-in-hibernate-many-to-one-mapping-however-data-exist
     //when private then in indexOLD.html - Property or field 'beeTaxes' cannot be found on object of type 'com.bee.domain.BeePerson' - maybe not public?
     public List<BeeAccessPerson> beeAccessPersons = new ArrayList<BeeAccessPerson>();

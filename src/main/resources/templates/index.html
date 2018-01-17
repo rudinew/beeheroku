@@ -55,43 +55,26 @@
                 </div>
                 <!-- /.col-lg-12 -->
 
-              <!--  <div th:if="${countEmptyDoc} &gt; 0"  class="col-lg-6"> -->
-                <div  class="col-lg-6">
+                <div th:if="${countEmptyDoc} &gt; 0"  class="col-lg-6">
                     <div class="panel panel-default">
-                      <!--  <div class="panel-heading">
-                            <span th:text ="'Зверніть увагу! У вас '+${countEmptyDoc} + ' незаповнених документів!' "></span>
+                        <div class="panel-heading">
+                            <span th:text ="'Зверніть увагу! У вас є незаповнені документи: '+${countEmptyDoc}  "></span>
                         </div>
-                        -->
                         <!-- /.panel-heading -->
 
                         <div class="panel-body">
-                            <!-- <div class="alert alert-success">
-                                  Коваленко А.Н. потрібно вклеїти фото <a href="#" class="alert-link">Alert Link</a>.
-                              </div>
-                              <div class="alert alert-info">
-                                  Туманов А.Р. не внесено паспорт <a href="#" class="alert-link">Alert Link</a>.
-                              </div>-->
-                            <!--  <div class="alert alert-warning">
-                                  Коваленко А.Н. потрібно вклеїти фото <a href="#" class="alert-link">Alert Link</a>.
-                              </div>
-                              <div class="alert alert-danger">
-                                  Туманов А.Р. не внесено паспорт <a href="#" class="alert-link">Alert Link</a>.
-                              </div> -->
 
 
                             <table>
-                                <tr th:each="doc : ${beeCitizenship}"> <!-- emptyDoc -->
-                                    <!-- <td class="alert alert-danger">
+                                <tr th:each="doc : ${emptyDoc}">
+                                    <!-- <td><span th:text ="${doc.beeDocType.name}"> </span></td> -->
+                                    <td class="alert alert-danger">
                                         <a th:href="${'/personInfo/' + doc.beePerson.id + '/doc/new/'+ doc.beeDocType.id}" >
                                             <span th:text ="${doc.beePerson.lastname} + ' ' + ${doc.beePerson.firstname}+ ' ' + ${doc.beePerson.middlename} +': '+ ${doc.beeDocType.name}"> </span>
                                         </a>
                                     </td>
-                                    -->
 
-                                    <td class="alert alert-danger">
-                                        <span th:text ="${doc.id} + ' ' + ${doc.name}"> </span>
 
-                                    </td>
 
 
                                 </tr>
@@ -100,13 +83,12 @@
                              Note that textual aliases exist for some of these operators:
                              gt (>), lt (<), ge (>=), le (<=), not (!). Also eq (==), neq/ne (!=).
                              -->
-                          <!--  <div><small>
+                            <div><small>
                                 <em>
                                     <span th:if="${countEmptyDoc} &gt; 5 "  th:text ="'*Примітка: відображено перші 5 незаповнених документів'"></span>
                                 </em>
                             </small>
                             </div>
-                            -->
 
 
 

@@ -94,11 +94,9 @@ password
                 .rememberMe()
                 .and()
                 .csrf();
-        // .and()
-        // .requiresChannel()
-        // .antMatchers("/WEB-INF/templates/personal/**").requiresSecure();  //require HTTPS
-
-
+               /* .and()
+                .requiresChannel()
+                .antMatchers("/personal/**").requiresSecure(); */ //require HTTPS
 
     }
 

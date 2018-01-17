@@ -1,6 +1,7 @@
 package com.bee.backend.domain.security;
 
 import com.bee.backend.domain.BaseEntity;
+import com.bee.backend.domain.data.BeeDocNotification;
 import com.bee.web.validators.ValidEmail;
 
 import org.hibernate.annotations.NotFound;
@@ -75,7 +76,7 @@ public class BeeUsers extends BaseEntity {
 
     ///
     //BEEDOCNOTIFICATION
-   /* @OneToMany(mappedBy="beeUsers", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="beeUsers", fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
     public List<BeeDocNotification> beeDocNotifications = new ArrayList<BeeDocNotification>();
     public  List<BeeDocNotification> getBeeDocNotifications() {
@@ -93,7 +94,7 @@ public class BeeUsers extends BaseEntity {
     public int getNrOfBeeDocNotifications() {
         return getBeeDocNotifications().size();
     }
-*/
+
     ///
 
     public BeeUsers() {
